@@ -20,6 +20,7 @@ const client = new MongoClient(uri, {
 app.get("/", (req, res) => {
   res.send("Tour X server is running");
 });
+// comment
 
 client.connect((err) => {
   const packageCollection = client.db("tourx").collection("packcages");
