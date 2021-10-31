@@ -4,7 +4,7 @@ require("dotenv").config();
 const { MongoClient } = require("mongodb");
 const ObjectId = require("mongodb").ObjectId;
 
-const port = 8000;
+const port = process.env.PORT || 8000;
 const app = express();
 
 app.use(cors());
@@ -12,13 +12,15 @@ app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.hahq7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
+console.log(uri);
+
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 app.get("/", (req, res) => {
-  res.send("Hello From server");
+  res.send("Tour X server is running");
 });
 
 client.connect((err) => {
@@ -44,6 +46,14 @@ client.connect((err) => {
     const packages = await result.toArray();
     res.send(packages);
   });
+  // Get Orders
+  app.get("/allorders", async (req, res) => {
+    const result = orderCollection.find({});
+    const allOrders = await result.toArray();
+    res.send(allOrders);
+  });
+
+  console.log("all routes work");
 
   // Get Single Service
   app.get("/booking/:id", async (req, res) => {
